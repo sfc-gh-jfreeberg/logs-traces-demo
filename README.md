@@ -4,16 +4,19 @@ Viz demo of logs and traces using Streamlit
 
 ## Setup
 
+Use conda
+
 ```
 conda env create --file environment.yml
 conda activate logs-demo
 ```
 
-Or: 
+Or create a virtual env:
 
 ```
 python -m venv venv
 source venv/scripts/activate
+pip install -r requirements.txt
 ```
 
 Set the following environment variables with your Snowflake account information:
@@ -38,4 +41,10 @@ $env:SNOWSQL_PWD = "<replace with your password>"
 $env:SNOWSQL_DATABASE = "<replace with your database>"
 $env:SNOWSQL_SCHEMA = "<replace with your schema>"
 $env:SNOWSQL_WAREHOUSE = "<replace with your warehouse>"
+```
+
+## Run the app
+
+```bash
+python main.py
 ```
