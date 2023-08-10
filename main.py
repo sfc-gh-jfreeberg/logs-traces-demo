@@ -7,9 +7,9 @@ from snowflake.snowpark.session import Session
 import altair as alt 
 import pandas as pd 
 import plotly.express as px
-from util import get_env_var_config
-from queries import object_list_query, base_query
-import filters
+from src.util import get_env_var_config
+from src.queries import object_list_query, base_query
+import src.filters as filters
 
 #Set Page Configuration
 st.set_page_config(
