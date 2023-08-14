@@ -1,5 +1,4 @@
 # Import python packages
-import streamlit as st
 from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import * #col, count, column, date_sub, to_date, current_timestamp, contains
 from snowflake.snowpark.types import *
@@ -7,6 +6,11 @@ from snowflake.snowpark.session import Session
 import altair as alt 
 import pandas as pd 
 import plotly.express as px
+
+import streamlit as st
+import st_connection
+import st_connection.snowflake
+
 from src.util import get_env_var_config
 from src.queries import object_list_query, base_query
 import src.filters as filters
@@ -16,6 +20,18 @@ st.set_page_config(
     layout="wide"
 )
 
+session = None
+try: 
+    session = get_active_session()
+except Exception:
+    try:
+        session = Session.builder.configs(get_env_var_config()).create()
+    except Exception:
+        try:
+            session = st.connection.snowflake.login({'account': '', 'user': '', 'password': None, 'database': '', 'warehouse': ''})
+        except Exception as e:
+            raise e
+
 tab1, tab2, tab3 = st.tabs(["Log Explorer", "Trace Explorer", "Setup Event Table"])
 
 with tab1:
@@ -23,15 +39,6 @@ with tab1:
     # Write directly to the app
     st.title("Snowflake Log Explorer")
     st.write("See logs information from across your Snowflake account")
-    
-    # Get the current credentials
-    try: 
-        session = get_active_session()
-    except Exception:
-        try:
-            session = Session.builder.configs(get_env_var_config()).create()
-        except Exception as e:
-            raise e
     
     st.write(st.__version__)
     
