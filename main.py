@@ -26,7 +26,7 @@ try:
     session = Session.builder.configs(get_env_var_config()).create()
 except Exception:
     try:
-        session = st.connection.snowflake.login({'account': '', 'user': '', 'password': None, 'database': '', 'warehouse': ''})
+        session = st.connection.snowflake.login({'account': '', 'user': '', 'password': None, 'warehouse': ''})
     except Exception as e:
         raise e
 
