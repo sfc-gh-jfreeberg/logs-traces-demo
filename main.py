@@ -21,16 +21,14 @@ st.set_page_config(
 )
 
 session = None
-try: 
-    session = get_active_session()
+
+try:
+    session = Session.builder.configs(get_env_var_config()).create()
 except Exception:
     try:
-        session = Session.builder.configs(get_env_var_config()).create()
-    except Exception:
-        try:
-            session = st.connection.snowflake.login({'account': '', 'user': '', 'password': None, 'database': '', 'warehouse': ''})
-        except Exception as e:
-            raise e
+        session = st.connection.snowflake.login({'account': '', 'user': '', 'password': None, 'database': '', 'warehouse': ''})
+    except Exception as e:
+        raise e
 
 tab1, tab2, tab3 = st.tabs(["Log Explorer", "Trace Explorer", "Setup Event Table"])
 
