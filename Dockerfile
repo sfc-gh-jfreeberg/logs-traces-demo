@@ -19,4 +19,11 @@ EXPOSE 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+COPY --from=datadog/serverless-init:1 /datadog-init /app/datadog-init
+RUN pip install --target /dd_tracer/python/ ddtrace
+ENV DD_SERVICE=datadog-demo-run-python
+ENV DD_ENV=datadog-demo
+ENV DD_VERSION=1
+ENTRYPOINT ["/app/datadog-init"]
+
+CMD ["/dd_tracer/python/bin/ddtrace-run", "streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
